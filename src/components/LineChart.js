@@ -1,5 +1,6 @@
 import { Line } from 'react-chartjs-2'
-import { Card, CardContent, CardHeader } from '@material-ui/core'
+import { Card, CardContent, CardHeader, CardActions } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 const options = {
     scales: {
@@ -23,6 +24,14 @@ const LineChart = ({ chartData }) => {
             <CardContent>
                 <Line data={chartData} options={options} />
             </CardContent>
+            <CardActions>
+                <Typography color="text.secondary">
+                    Start Date: { chartData.startDate}
+                </Typography>
+                <Typography variant="alignRight" color="text.secondary">
+                    End Date: { chartData.endDate}
+                </Typography>
+            </CardActions>
         </Card>
     )
 }

@@ -43,6 +43,7 @@ const styles = makeStyles({
     marginTop: "2.5rem",
   },
   grid:{
+    marginTop: "2.5rem",
     display: "flex", 
     justifyContent: "center",
     alignItems: "center",
@@ -59,6 +60,8 @@ function App() {
       setTimeSeriesData({
         name: data.dataset.name,
         refreshed: data.dataset.refreshed_at,
+        startDate: data.dataset.start_date,
+        endDate: data.dataset.end_date,
         labels: data.dataset.data.map((item) => item[0]),
         datasets: [
           {
