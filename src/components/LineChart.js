@@ -1,4 +1,5 @@
 import { Line } from 'react-chartjs-2'
+import { Card, CardContent, CardHeader } from '@material-ui/core'
 
 const options = {
     scales: {
@@ -14,12 +15,15 @@ const options = {
 
 const LineChart = ({ chartData }) => {
     return (
-        <>
-            <div className='header'>
-                <h3 className='title'>{ chartData.name }</h3>
-            </div>
-            <Line data={chartData} options={options} />
-        </>
+        <Card>
+            <CardHeader 
+                title={ chartData.name }
+                subheader={`Last refreshed at ${ chartData.refreshed}`}
+            />
+            <CardContent>
+                <Line data={chartData} options={options} />
+            </CardContent>
+        </Card>
     )
 }
 

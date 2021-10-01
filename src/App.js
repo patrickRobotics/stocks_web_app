@@ -58,6 +58,7 @@ function App() {
       const data = await fetchSeriesData()
       setTimeSeriesData({
         name: data.dataset.name,
+        refreshed: data.dataset.refreshed_at,
         labels: data.dataset.data.map((item) => item[0]),
         datasets: [
           {
