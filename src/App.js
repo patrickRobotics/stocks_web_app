@@ -1,6 +1,8 @@
-import { createTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import { useState, useEffect } from "react"
+import { createTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles"
+
 import Header from './components/Header'
-import Footer from './components/Footer';
+import Footer from './components/Footer'
 
 const theme = createTheme({
   palette: {
@@ -48,7 +50,24 @@ const styles = makeStyles({
 })
 
 function App() {
-  const classes = styles(); 
+  const [ timeSeriesData, setTimeSeriesData ] = useState([])
+
+  useEffect(() => {
+    const getTasks = async () => {
+      const data = await fetchSeriesData()
+      setTimeSeriesData(data)
+    }
+    getTasks()
+  }, []);
+
+  // Fetch Company Data
+  const fetchSeriesData = async () => {
+    const res = await fetch('https://data.nasdaq.com/api/v3/datasets/BATS/EDGA_TGH_PB?start_date=2021-09-24&end_date=2021-09-30&api_key=HaBK6N27mzVSVL2B_sUC')
+    const seriesData = await res.json()
+    return(seriesData)
+  }
+  
+  const classes = styles();
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
