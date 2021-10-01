@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles
 
 import Header from './components/Header'
 import Footer from './components/Footer'
+import LineChart from './components/LineChart'
 
 const theme = createTheme({
   palette: {
@@ -38,7 +39,7 @@ const styles = makeStyles({
   bigSpace: {
     marginTop: "5rem"
   },
-  littleSpace:{
+  canvasSpace:{
     marginTop: "2.5rem",
   },
   grid:{
@@ -55,14 +56,31 @@ function App() {
   useEffect(() => {
     const getTasks = async () => {
       const data = await fetchSeriesData()
-      setTimeSeriesData(data)
+      setTimeSeriesData({
+        name: data.dataset.name,
+        labels: data.dataset.data.map((item) => item[0]),
+        datasets: [
+          {
+            label: data.dataset.column_names[1],
+            data: data.dataset.data.map((item) => item[1]),
+            borderColor: "#3cba9f",
+            backgroundColor: "#71d1bd"
+          },
+          {
+            label: data.dataset.column_names[2],
+            data: data.dataset.data.map((item) => item[2]),
+            borderColor: "#3e95cd",
+            backgroundColor: "#7bb6dd"
+          }
+        ]
+      })
     }
     getTasks()
   }, []);
 
   // Fetch Company Data
   const fetchSeriesData = async () => {
-    const res = await fetch('https://data.nasdaq.com/api/v3/datasets/BATS/EDGA_TGH_PB?start_date=2021-09-24&end_date=2021-09-30&api_key=HaBK6N27mzVSVL2B_sUC')
+    const res = await fetch('https://data.nasdaq.com/api/v3/datasets/BATS/EDGA_TGH_PB?start_date=2021-09-01&end_date=2021-09-30&api_key=HaBK6N27mzVSVL2B_sUC')
     const seriesData = await res.json()
     return(seriesData)
   }
@@ -72,7 +90,9 @@ function App() {
     <div className="App">
       <ThemeProvider theme={theme}>
         <Header />
-
+        <div className={classes.grid}>
+          <LineChart chartData={timeSeriesData}/>
+        </div>
         <div className={classes.bigSpace}>
           <Footer />
         </div>
