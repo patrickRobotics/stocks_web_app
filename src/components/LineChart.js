@@ -25,10 +25,10 @@ const LineChart = ({ chartData }) => {
                 <Line data={chartData} options={options} />
             </CardContent>
             <CardActions>
-                <Typography color="text.secondary">
+                <Typography color="secondary">
                     Start Date: { chartData.startDate}
                 </Typography>
-                <Typography variant="alignRight" color="text.secondary">
+                <Typography color="secondary">
                     End Date: { chartData.endDate}
                 </Typography>
             </CardActions>

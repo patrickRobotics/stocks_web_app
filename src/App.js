@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 import { createTheme, ThemeProvider, makeStyles } from "@material-ui/core/styles"
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -52,11 +54,37 @@ const styles = makeStyles({
 })
 
 function App() {
+  const [ batCodes, setBatsCodes ] = useState([])
   const [ timeSeriesData, setTimeSeriesData ] = useState([])
 
   useEffect(() => {
-    const getTasks = async () => {
-      const data = await fetchSeriesData()
+    const getBatsCodes = async () => {
+      const data = await fetchBatCodes()
+      const labels = data.map(item => {
+        return { label:item.code }
+      })
+      setBatsCodes(labels)
+    }
+    getBatsCodes()
+  }, []);
+
+  // Fetch BATS codes
+  const fetchBatCodes = async () => {
+    const res = await fetch('http://localhost:5000/codes')
+    const data = await res.json()
+    return(data)
+  }
+
+  // Fetch Company Data
+  const fetchSeriesData = async (code) => {
+    const res = await fetch(`https://data.nasdaq.com/api/v3/datasets/BATS/${code}?api_key=HaBK6N27mzVSVL2B_sUC`)
+    const seriesData = await res.json()
+    return(seriesData)
+  }
+
+  const getTasks = async (object, value) => {
+    if(value) {
+      const data = await fetchSeriesData(value.label)
       setTimeSeriesData({
         name: data.dataset.name,
         refreshed: data.dataset.refreshed_at,
@@ -79,15 +107,8 @@ function App() {
         ]
       })
     }
-    getTasks()
-  }, []);
-
-  // Fetch Company Data
-  const fetchSeriesData = async () => {
-    const res = await fetch('https://data.nasdaq.com/api/v3/datasets/BATS/EDGA_TGH_PB?start_date=2021-09-01&end_date=2021-09-30&api_key=HaBK6N27mzVSVL2B_sUC')
-    const seriesData = await res.json()
-    return(seriesData)
   }
+      
   
   const classes = styles();
   return (
@@ -95,7 +116,13 @@ function App() {
       <ThemeProvider theme={theme}>
         <Header />
         <div className={classes.grid}>
-          <LineChart chartData={timeSeriesData}/>
+          <Autocomplete style={{ width: 350 }} getOptionLabel={ option => option.label }
+            disablePortal options={ batCodes } sx={{ width: 300 }} onChange={ getTasks }
+            renderInput={ (params) => 
+              <TextField { ...params } label="Short Sale Market for Stock Symbol" variant="standard" fullWidth />
+            }
+          />
+          <LineChart chartData={ timeSeriesData }/>
         </div>
         <div className={classes.bigSpace}>
           <Footer />
