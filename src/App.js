@@ -4,8 +4,9 @@ import TextField from '@material-ui/core/TextField'
 import { Typography } from '@material-ui/core'
 import { Card, CardContent } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
-
 import Autocomplete from '@material-ui/lab/Autocomplete'
+
+import { getBatsCodes } from './api'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -57,7 +58,7 @@ function App() {
   useEffect(() => {
     const getBatsCodes = async () => {
       const data = await fetchBatsCodes()
-      const labels = data.map(item => {
+      const labels = data[0].map(item => {
         return { label:item.code }
       })
       setBatsCodes(labels)
@@ -67,8 +68,7 @@ function App() {
 
   // Fetch BATS codes
   const fetchBatsCodes = async () => {
-    const res = await fetch('http://localhost:5000/codes')
-    const data = await res.json()
+    const data = await getBatsCodes()
     return(data)
   }
 
@@ -130,7 +130,7 @@ function App() {
             <Grid item xs>
               <Card>
                 <CardContent>
-                  <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                  <Typography sx={{ fontSize: 14 }} color="textSecondary" gutterBottom>
                     Select a company by it BATS code to view data
                   </Typography>
                   <Autocomplete style={{ width: 350 }} getOptionLabel={ option => option.label }
