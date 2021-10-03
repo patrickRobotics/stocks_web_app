@@ -1,5 +1,5 @@
 import {Toolbar, Typography} from '@material-ui/core'
-import {makeStyles} from "@material-ui/core/styles"; 
+import {makeStyles} from '@material-ui/core/styles'
 
 const styles = makeStyles({
     bar:{
@@ -20,7 +20,7 @@ const Header = () => {
     return (
         <Toolbar position="sticky" color="rgba(0, 0, 0, 0.87)" className={classes.bar}>   
             <Typography variant="h6" className={classes.menuItem}>
-                Company Stock Markets
+                BATS U.S. Stock Exchanges
             </Typography>
         </Toolbar>
     )

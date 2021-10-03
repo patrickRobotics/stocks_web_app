@@ -1,6 +1,6 @@
 import { Line } from 'react-chartjs-2'
 import { Card, CardContent, CardHeader, CardActions } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
+import { DateFilter } from './DateFIlter'
 
 const options = {
     scales: {
@@ -14,7 +14,7 @@ const options = {
     },
 };
 
-const LineChart = ({ chartData }) => {
+const LineChart = ({ chartData,  onFilterByDates }) => {
     return (
         <Card>
             <CardHeader 
@@ -25,12 +25,7 @@ const LineChart = ({ chartData }) => {
                 <Line data={chartData} options={options} />
             </CardContent>
             <CardActions>
-                <Typography color="secondary">
-                    Start Date: { chartData.startDate}
-                </Typography>
-                <Typography color="secondary">
-                    End Date: { chartData.endDate}
-                </Typography>
+                <DateFilter endDate={ chartData.endDate } onFilterByDates={ onFilterByDates } code={ chartData.code } />
             </CardActions>
         </Card>
     )
